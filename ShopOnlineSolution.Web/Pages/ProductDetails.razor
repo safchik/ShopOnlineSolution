@@ -1,13 +1,13 @@
-﻿﻿@page "/ProductDetails/{Id:int}"
+﻿@page "/ProductDetails/{Id:int}"
 @inherits ProductDetailsBase
 
 @if (Product == null && ErrorMessage == null)
 {
-    <h3>Loading product details...</h3>
+    <DisplaySpinner />
 }
 else if (ErrorMessage != null)
 {
-    <h3 class="text-danger">@ErrorMessage</h3>
+    <DisplayError ErrorMessage="@ErrorMessage"></DisplayError>
 }
 else
 {
