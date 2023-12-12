@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ShopOnline.Api.Extentions;
 using ShopOnline.Api.Repositories.Contracts;
 using ShopOnline.Models.Dtos;
 
@@ -19,6 +20,7 @@ namespace ShopOnline.Api.Controllers
         }
 
         [HttpGet]
+        [Route("{userId/GetItems}")]
 
         public async Task<ActionResult<IEnumerable<CartItemDto>>> GetItems(int userId)
         {
@@ -37,6 +39,9 @@ namespace ShopOnline.Api.Controllers
                 {
                     throw new Exception("No products exist in the system");
                 }
+
+                var cartItemsDto = cartItems.ConvertToDto(products);
+                return Ok(cartItemsDto);
             }
             catch (Exception)
             {
