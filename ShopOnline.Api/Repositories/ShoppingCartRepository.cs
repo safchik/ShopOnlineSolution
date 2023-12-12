@@ -52,6 +52,7 @@ namespace ShopOnline.Api.Repositories
 
         public async Task<CartItem> GetItem(int id)
         {
+#pragma warning disable CS8603 // Possible null reference return.
             return await (from cart in this.shopOnlineDbContext.Carts
                           join cartItem in this.shopOnlineDbContext.CartItems
                           on cart.Id equals cartItem.CartId
@@ -63,6 +64,7 @@ namespace ShopOnline.Api.Repositories
                               Qty = cartItem.Qty,
                               CartId = cartItem.CartId
                           }).SingleOrDefaultAsync();
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
         public async Task<IEnumerable<CartItem>> GetItems(int userId)
