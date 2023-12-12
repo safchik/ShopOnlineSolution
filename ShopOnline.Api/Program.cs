@@ -17,6 +17,7 @@ builder.Services.AddDbContextPool<ShopOnlineDBContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("ShopOnlineConnection")));
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IShoppingCartRepositiry, ShoppingCartRepository>();
 
 var app = builder.Build();
 
