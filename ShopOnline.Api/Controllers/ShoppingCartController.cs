@@ -43,9 +43,36 @@ namespace ShopOnline.Api.Controllers
                 var cartItemsDto = cartItems.ConvertToDto(products);
                 return Ok(cartItemsDto);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("{id:int}")]
+
+        public async Task<ActionResult<CartItemDto>> GetItem(int id)
+        {
+            try
+            {
+                var cartItem = await this.shoppingCartRepositiry.GetItem(id);
+                if (cartItem == null)
+                {
+                    return NotFound();
+                }
+
+                var product = await productRepository.GetItem(cartItem.ProductId);
+
+                if (product == null)
+                {
+                    return NotFound();
+                }
+                var cartItemDto = cartItem.ConvertToDto(product);
+                return Ok(cartItemDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
     }
