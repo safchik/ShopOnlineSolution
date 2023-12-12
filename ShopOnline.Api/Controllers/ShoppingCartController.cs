@@ -75,5 +75,33 @@ namespace ShopOnline.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpPost]
+        public async Task<ActionResult<CartItemDto>> PostItem([FromBody] CartItemToAddDto cartItemToAddDto)
+        {
+            try
+            {
+                var newCartItem = await this.shoppingCartRepositiry.AddItem(cartItemToAddDto);
+
+                if (newCartItem == null)
+                {
+                    return NoContent();
+                }
+
+                var product = await productRepository.GetItem(newCartItem.ProductId);
+
+                if (product == null)
+                {
+                    throw new Exception($"Something went wrong when attempting to retrieve product (productId:({cartItemToAddDto.ProductId})");
+                }
+
+                var newCartItemDto = newCartItem.ConvertToDto(product);
+                return CreatedAtAction(nameof(GetItem), new { id = newCartItemDto.Id }, newCartItemDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }
