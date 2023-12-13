@@ -9,13 +9,15 @@ namespace ShopOnlineSolution.Web.Pages
         [Inject]
         public IShoppingCartService ShoppingCartService { get; set; }
 
-        public IEnumerable<CartItemDto> ShoppingCartItems { get; set; }
+        public List<CartItemDto> ShoppingCartItems { get; set; }
         public string ErrorMessage { get; set; }
         protected override async Task OnInitializedAsync()
         {
             try
             {
+               
                 ShoppingCartItems = await ShoppingCartItems.GetItems(HardCoded.UserId);
+              
             }
             catch (Exception ex)
             {
